@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="ja" class="h-full">
-  <head>
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Marucof Design School</title>
-    <meta name="description" content="Design is intelligence made visible." />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="description" content="Design is intelligence made visible. A minimalist design school." />
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Oswald:wght@400;700&family=Shippori+Mincho:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -21,9 +25,6 @@
             colors: {
               black: '#0a0a0a',
               white: '#ffffff',
-            },
-            spacing: {
-              '128': '32rem',
             },
             animation: {
               marquee: 'marquee 25s linear infinite',
@@ -38,34 +39,336 @@
         }
       }
     </script>
+
     <style>
       body {
-        background-color: #f2f2f2; /* Matches App background */
+        background-color: #f2f2f2;
         margin: 0;
-        overflow: hidden; /* Handle scrolling within the app container */
+        overflow: hidden; /* App container handles scrolling */
       }
-      /* Hide scrollbar for Chrome, Safari and Opera */
-      .no-scrollbar::-webkit-scrollbar {
-          display: none;
+      /* Hide scrollbar */
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      
+      /* Animation classes for JS IntersectionObserver */
+      .reveal-section {
+        opacity: 0;
+        transform: translateY(3rem); /* translate-y-12 equivalent */
+        transition: all 1s ease-out;
       }
-      /* Hide scrollbar for IE, Edge and Firefox */
-      .no-scrollbar {
-          -ms-overflow-style: none;  /* IE and Edge */
-          scrollbar-width: none;  /* Firefox */
+      .reveal-section.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Marquee Wrapper */
+      .marquee-container {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .animate-marquee {
+        display: inline-block;
+        padding-left: 100%;
+        animation: marquee 25s linear infinite;
       }
     </style>
-  <script type="importmap">
+<script type="importmap">
 {
   "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0"
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
   }
 }
 </script>
 </head>
-  <body class="h-full">
-    <div id="root" class="h-full"></div>
-    <script type="module" src="./index.tsx"></script>
-  </body>
+<body class="h-full font-sans antialiased text-black relative">
+
+    <!-- PC Background: Grid (Recreated from GridOverlay.tsx) -->
+    <div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
+         style="background-image: linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px); background-size: 40px 40px;">
+    </div>
+
+    <!-- Main Container -->
+    <div id="mobile-container" class="w-full h-full md:max-w-[420px] bg-white relative overflow-y-scroll overflow-x-hidden no-scrollbar md:shadow-2xl transition-all duration-500 z-10 mx-auto border-x border-black/5">
+        
+        <!-- Grid Overlay Internal -->
+        <div class="absolute inset-0 pointer-events-none z-0 overflow-hidden h-[200vh]">
+            <div class="absolute left-[8%] top-0 bottom-0 w-px bg-black/5"></div>
+            <div class="absolute left-[33.33%] top-0 bottom-0 w-px bg-black/5"></div>
+            <div class="absolute right-[8%] top-0 bottom-0 w-px bg-black/5"></div>
+            <div class="absolute top-[12%] left-0 right-0 h-px bg-black/5"></div>
+            <div class="absolute top-[45%] left-0 right-0 h-px bg-black/5"></div>
+            <div class="absolute bottom-[15%] left-0 right-0 h-px bg-black/5"></div>
+        </div>
+
+        <!-- Header -->
+        <header id="main-header" class="sticky top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-6 flex justify-between items-center bg-transparent">
+            <span class="font-display font-bold tracking-tighter text-xl">MARUCOF</span>
+            <div class="w-8 h-8 flex flex-col justify-center gap-1.5 cursor-pointer group">
+                <span class="w-full h-0.5 bg-black transition-all group-hover:w-1/2 ml-auto"></span>
+                <span class="w-full h-0.5 bg-black"></span>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="min-h-[90vh] flex flex-col justify-between px-6 pb-12 pt-4 relative z-10">
+            <div class="mt-12">
+                <div class="reveal-section" style="transition-delay: 100ms;">
+                    <h2 class="text-[10px] font-bold tracking-[0.4em] uppercase mb-6 flex items-center gap-4">
+                        <span class="w-8 h-px bg-black"></span>
+                        Personal Design Tutor
+                    </h2>
+                </div>
+                <div class="reveal-section" style="transition-delay: 300ms;">
+                    <h1 class="font-display text-[6rem] leading-[0.8] font-black tracking-tighter break-words -ml-1">
+                        MARU<br/>
+                        COF<br/>
+                        <span class="text-4xl tracking-tight font-light font-sans block mt-6 border-l-4 border-black pl-6 py-2">
+                            Design<br/>School
+                        </span>
+                    </h1>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <div class="reveal-section" style="transition-delay: 600ms;">
+                    <div class="w-full h-px bg-black mb-8 origin-left transform scale-x-100 opacity-20"></div>
+                    <p class="font-serif text-xl leading-relaxed mb-10 font-medium">
+                        デザインは、<br/>
+                        整えること。<br/>
+                        伝えること。<br/>
+                        そして、魅せること。
+                    </p>
+                    <div class="flex flex-col items-start gap-2 animate-bounce">
+                        <div class="h-16 w-px bg-black"></div>
+                        <span class="text-[10px] tracking-widest uppercase">Scroll</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Philosophy Section -->
+        <section class="py-24 px-6 relative z-10 bg-white text-black border-t border-black">
+            <div class="reveal-section">
+                <div class="relative mb-16">
+                    <h2 class="font-display text-8xl font-bold leading-none opacity-5 absolute -top-10 -left-6 select-none pointer-events-none break-all">
+                        PHILO<br/>SOPHY
+                    </h2>
+                    <h2 class="font-display text-4xl font-bold relative z-10">PHILOSOPHY</h2>
+                </div>
+            </div>
+            
+            <div class="reveal-section" style="transition-delay: 200ms;">
+                <div class="space-y-12">
+                    <div class="group">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="font-display text-5xl font-bold opacity-10 group-hover:opacity-100 transition-opacity">01</span>
+                            <h3 class="text-xl font-bold font-display tracking-wide uppercase">Grid System</h3>
+                        </div>
+                        <p class="text-sm text-gray-700 font-medium leading-loose pl-14 border-l border-black/10">
+                            美しさには数学的な根拠があります。感性だけでなく、ロジックに基づいたレイアウトを学びます。
+                        </p>
+                    </div>
+                    
+                    <div class="group">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="font-display text-5xl font-bold opacity-10 group-hover:opacity-100 transition-opacity">02</span>
+                            <h3 class="text-xl font-bold font-display tracking-wide uppercase">Typography</h3>
+                        </div>
+                        <p class="text-sm text-gray-700 font-medium leading-loose pl-14 border-l border-black/10">
+                            文字は読むものであり、見るものです。書体の選び方から、文字組みの微細な調整まで徹底的に。
+                        </p>
+                    </div>
+
+                    <div class="group">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="font-display text-5xl font-bold opacity-10 group-hover:opacity-100 transition-opacity">03</span>
+                            <h3 class="text-xl font-bold font-display tracking-wide uppercase">White Space</h3>
+                        </div>
+                        <p class="text-sm text-gray-700 font-medium leading-loose pl-14 border-l border-black/10">
+                            余白は「空き」ではなく「意図された空間」です。間の取り方でデザインの品格は決まります。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Curriculum Preview -->
+        <section class="py-24 px-6 relative z-10 border-t border-black">
+            <div class="reveal-section">
+                <div class="flex items-end justify-between mb-16">
+                    <h2 class="font-display text-5xl font-bold">COURSE</h2>
+                    <span class="text-[10px] font-bold tracking-widest bg-black text-white px-2 py-1">カリキュラム</span>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <div class="reveal-section" style="transition-delay: 100ms;">
+                    <div class="group cursor-pointer border border-black p-6 hover:bg-black hover:text-white transition-all duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-3xl font-bold font-display">BASIC</h3>
+                            <span class="font-mono text-xs border border-current px-2 rounded-full">01</span>
+                        </div>
+                        <p class="text-xs opacity-70 leading-relaxed mb-6">ツールの基礎操作から、デザインの基本原則（近接・整列・反復・対比）までをマスターします。</p>
+                        <div class="flex justify-end">
+                            <span class="text-[10px] uppercase tracking-widest group-hover:underline">View Detail -></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-section" style="transition-delay: 200ms;">
+                    <div class="group cursor-pointer border border-black p-6 hover:bg-black hover:text-white transition-all duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-3xl font-bold font-display">ADVANCE</h3>
+                            <span class="font-mono text-xs border border-current px-2 rounded-full">02</span>
+                        </div>
+                        <p class="text-xs opacity-70 leading-relaxed mb-6">実案件を想定したバナー制作、LPデザイン、印刷物の入稿データ作成など実践的なスキルを。</p>
+                        <div class="flex justify-end">
+                            <span class="text-[10px] uppercase tracking-widest group-hover:underline">View Detail -></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-section" style="transition-delay: 300ms;">
+                    <div class="group cursor-pointer border border-black p-6 hover:bg-black hover:text-white transition-all duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-3xl font-bold font-display">PRO</h3>
+                            <span class="font-mono text-xs border border-current px-2 rounded-full">03</span>
+                        </div>
+                        <p class="text-xs opacity-70 leading-relaxed mb-6">ブランディング、ロゴデザイン、そしてフリーランスとして独立するためのビジネススキルまで。</p>
+                        <div class="flex justify-end">
+                            <span class="text-[10px] uppercase tracking-widest group-hover:underline">View Detail -></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Big Text Transition (Marquee) -->
+        <section class="py-16 overflow-hidden bg-white text-black border-y border-black relative">
+            <div class="absolute inset-0 bg-black/5 skew-y-3 scale-110 transform"></div>
+            <!-- Tailwind config adds custom marquee animation -->
+            <div class="marquee-container">
+                <div class="whitespace-nowrap font-display text-[8rem] font-bold tracking-tighter select-none animate-marquee opacity-100">
+                    DESIGN IS INTELLIGENCE MADE VISIBLE — DESIGN IS INTELLIGENCE MADE VISIBLE — 
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section class="py-24 px-6 relative z-10 bg-white">
+            <div class="reveal-section">
+                <h2 class="font-display text-7xl font-bold mb-16 text-center tracking-tighter">PRICE</h2>
+            </div>
+
+            <div class="reveal-section" style="transition-delay: 200ms;">
+                <div class="border-2 border-black p-8 relative shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-black text-white text-[10px] px-4 py-1 uppercase tracking-widest font-bold">
+                        Recommended
+                    </div>
+                    <h3 class="text-center font-serif text-xl font-bold mb-4 mt-2">マンツーマン指導</h3>
+                    <div class="text-center mb-8 pb-8 border-b border-dashed border-black">
+                        <span class="text-5xl font-display font-bold">¥5,000</span>
+                        <span class="text-xs font-bold text-gray-500 ml-2">/ 60min</span>
+                    </div>
+                    <ul class="space-y-4 text-sm mb-10 font-medium">
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-black rotate-45"></div>
+                            完全オーダーメイドカリキュラム
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-black rotate-45"></div>
+                            チャットでの質問無制限
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-black rotate-45"></div>
+                            ポートフォリオ添削付き
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-black rotate-45"></div>
+                            就職・転職相談
+                        </li>
+                    </ul>
+                    <button class="relative w-full px-8 py-4 uppercase font-display tracking-widest text-sm transition-all duration-300 overflow-hidden group border border-black bg-black text-white hover:bg-white hover:text-black">
+                        <span class="relative z-10 flex items-center justify-center gap-2">Plan Detail</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA / Footer -->
+        <footer class="bg-white text-black px-6 py-20 relative overflow-hidden border-t-2 border-black">
+            <div class="absolute inset-0 opacity-5 pointer-events-none">
+                <div class="absolute left-[20%] top-0 bottom-0 w-px bg-black"></div>
+                <div class="absolute right-[20%] top-0 bottom-0 w-px bg-black"></div>
+                <div class="absolute top-[50%] left-0 right-0 h-px bg-black"></div>
+            </div>
+
+            <div class="reveal-section">
+                <div class="text-center mb-16 relative z-10">
+                    <h2 class="font-display text-6xl font-black mb-8 leading-[0.9] tracking-tighter">
+                        START<br/>CREATING
+                    </h2>
+                    <p class="text-sm font-medium text-gray-600 mb-10 font-serif leading-loose">
+                        あなたのクリエイティブな旅を、<br/>
+                        ここから始めましょう。
+                    </p>
+                    <button class="relative px-8 py-4 uppercase font-display tracking-widest text-sm transition-all duration-300 overflow-hidden group border border-black bg-black text-white hover:bg-gray-800">
+                        <span class="relative z-10 flex items-center justify-center gap-2">FREE CONSULTATION</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="border-t border-black pt-8 flex flex-col items-center gap-6 text-[10px] font-bold uppercase tracking-[0.2em]">
+                <div class="flex gap-8">
+                    <a href="#" class="hover:line-through decoration-1 transition-all">Instagram</a>
+                    <a href="#" class="hover:line-through decoration-1 transition-all">Twitter</a>
+                </div>
+                <p class="opacity-50">&copy; 2024 MARUCOF DESIGN SCHOOL</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('mobile-container');
+            const header = document.getElementById('main-header');
+            
+            // 1. Sticky Header Logic
+            container.addEventListener('scroll', () => {
+                const scrolled = container.scrollTop;
+                if (scrolled > 20) {
+                    header.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-black/5');
+                    header.classList.remove('bg-transparent');
+                } else {
+                    header.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-black/5');
+                    header.classList.add('bg-transparent');
+                }
+            });
+
+            // 2. Intersection Observer for Reveal Animations
+            const observerOptions = {
+                root: container, // Use the scrollable container as root
+                threshold: 0.1,
+                rootMargin: "0px"
+            };
+
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        obs.unobserve(entry.target); // Only animate once
+                    }
+                });
+            }, observerOptions);
+
+            const sections = document.querySelectorAll('.reveal-section');
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
 </html>
